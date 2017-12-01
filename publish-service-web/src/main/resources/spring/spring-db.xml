@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+  <!--spring声明式事务管理控制-->
+  <!--配置事务管理器类-->
+  <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+  <!--设置注解驱动的事务管理-->
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+
+  <!--<bean id="datasource" class="com.github.mybatis.spring.DynamicDataSource">-->
+  <!--<property name="configName" value="fs-metadata-option-db"/>-->
+  <!--</bean>-->
+
+  <!-- 读取配置文件 -->
+  <util:properties id="db" location="classpath:config/publish-service-db.properties"/>
+
+  <!-- 配置数据库连接池 -->
+  <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="#{db.driver}"/>
+    <property name="url" value="#{db.url}"/>
+    <property name="username" value="#{db.user}"/>
+    <property name="password" value="#{db.password}"/>
+    <property name="maxTotal" value="#{db.maxTotal}"/>
+  </bean>
+
+  <!-- define the SqlSessionFactory -->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--注入连接池-->
+    <property name="dataSource" ref="dataSource"/>
+    <!--实体类路径-->
+    <property name="typeAliasesPackage" value="cn.tianwenjie.publish.system.entity"/>
+    <!--mybatis配置文件-->
+    <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+    <!--mapper路径-->
+    <!--<property name="mapperLocations" value="classpath:mybatis/mappers/*.xml"/>-->
+  </bean>
+
+  <!--mapper接口组件扫描-->
+  <bean id="scanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <!--指定mapper路径-->
+    <property name="basePackage" value="cn.tianwenjie.publish.system.mapper"/>
+    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+  </bean>
+</beans>

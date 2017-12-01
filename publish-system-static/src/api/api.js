@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-let base = '';
+// let base = '';
+let base = 'http://localhost:8080/publish-service';
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
