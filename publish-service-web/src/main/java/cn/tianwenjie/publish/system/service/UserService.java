@@ -1,7 +1,6 @@
 package cn.tianwenjie.publish.system.service;
 
 import cn.tianwenjie.publish.system.mapper.UserMapper;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public class UserService {
   @Resource
   private UserMapper userMapper;
 
-  public boolean login(@NonNull String account, @NonNull String password){
+  public boolean login(String account, String password) {
     return false;
   }
 }

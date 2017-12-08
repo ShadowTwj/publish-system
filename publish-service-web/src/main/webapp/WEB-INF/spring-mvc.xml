@@ -10,29 +10,36 @@
   <context:annotation-config/>
 
   <!--fastJson配置-->
-  <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig"
-        p:charset="UTF-8"
-        p:dateFormat="yyyy-MM-dd HH:mm:ss"/>
+  <!--<bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig"-->
+  <!--p:charset="UTF-8"-->
+  <!--p:dateFormat="yyyy-MM-dd HH:mm:ss"/>-->
 
   <!--<mvc:annotation-driven>-->
-    <!--<mvc:message-converters register-defaults="true">-->
-      <!--<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">-->
-        <!--<property name="supportedMediaTypes">-->
-          <!--<list>-->
-            <!--<value>application/json;charset=UTF-8</value>-->
-            <!--<value>application/xml;charset=UTF-8</value>-->
-            <!--<value>text/html;charset=UTF-8</value>-->
-            <!--<value>text/plain;charset=UTF-8</value>-->
-            <!--<value>text/xml;charset=UTF-8</value>-->
-            <!--<value>text/javascript;charset=UTF-8</value>-->
-          <!--</list>-->
-        <!--</property>-->
-        <!--<property name="fastJsonConfig" ref="fastJsonConfig"/>-->
-      <!--</bean>-->
-    <!--</mvc:message-converters>-->
+  <!--<mvc:message-converters register-defaults="true">-->
+  <!--<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">-->
+  <!--<property name="supportedMediaTypes">-->
+  <!--<list>-->
+  <!--<value>application/json;charset=UTF-8</value>-->
+  <!--<value>application/xml;charset=UTF-8</value>-->
+  <!--<value>text/html;charset=UTF-8</value>-->
+  <!--<value>text/plain;charset=UTF-8</value>-->
+  <!--<value>text/xml;charset=UTF-8</value>-->
+  <!--<value>text/javascript;charset=UTF-8</value>-->
+  <!--</list>-->
+  <!--</property>-->
+  <!--<property name="fastJsonConfig" ref="fastJsonConfig"/>-->
+  <!--</bean>-->
+  <!--</mvc:message-converters>-->
   <!--</mvc:annotation-driven>-->
 
+  <!--配置MVC注解扫描,相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，
+  配置一些messageconverter。即解决了@Controller注解的使用前提配置-->
+  <mvc:annotation-driven/>
+
+  <!-- DispatcherServlet收到请求之后，依据HandlerMapping的配置， 调用对应的Controller来处理-->
   <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+
+  <!--对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，如果不是静态资源的请求，才由DispatcherServlet继续处理-->
   <mvc:default-servlet-handler/>
 
   <!-- JSP 视图解析器 -->
@@ -44,6 +51,7 @@
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:order="1" p:contentType="text/html; charset=UTF-8" p:prefix="/" p:suffix=".html"/>
 
+  <!--跨域-->
   <mvc:cors>
     <mvc:mapping path="/**" allowed-origins="*"
                  allowed-methods="GET,PUT,POST,DELETE,OPTIONS" allowed-headers="*" allow-credentials="false"/>

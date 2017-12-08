@@ -7,7 +7,7 @@
   <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!-- 可让每天产生一个日志文件，最多 7 个，自动回滚 -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${catalina.home}/logs/fs-app-%d{yyyyMMdd}.log.zip</fileNamePattern>
+      <fileNamePattern>${catalina.home}/logs/app-%d{yyyyMMdd}.log.zip</fileNamePattern>
       <maxHistory>7</maxHistory>
     </rollingPolicy>
     <encoder>
