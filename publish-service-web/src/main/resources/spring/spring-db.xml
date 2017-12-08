@@ -11,10 +11,6 @@
   <!--设置注解驱动的事务管理-->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <!--<bean id="datasource" class="com.github.mybatis.spring.DynamicDataSource">-->
-  <!--<property name="configName" value="fs-metadata-option-db"/>-->
-  <!--</bean>-->
-
   <!-- 读取配置文件 -->
   <util:properties id="db" location="classpath:config/publish-service-db.properties"/>
 
