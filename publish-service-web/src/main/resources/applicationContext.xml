@@ -11,7 +11,7 @@
   <context:component-scan base-package="cn.tianwenjie.publish.system.service"/>
 
   <!--<import resource="classpath:spring/spring-cms.xml"/>-->
-  <!--<import resource="classpath:spring/spring-db.xml"/>-->
+  <import resource="classpath:spring/spring-db.xml"/>
 
 
 </beans>

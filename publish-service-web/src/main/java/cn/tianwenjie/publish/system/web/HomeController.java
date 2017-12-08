@@ -3,6 +3,7 @@ package cn.tianwenjie.publish.system.web;
 import cn.tianwenjie.publish.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,17 +19,18 @@ public class HomeController {
   @Resource
   private UserService userService;
 
-  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
   @ResponseBody
-  public String login(String account, String password) {
+  public String login(@RequestBody String username, String password) {
     //    userService.login(account, password);
-    String test = "test";
+    String test = "test_login";
     return test;
   }
 
   @RequestMapping(value = "/test")
+  @ResponseBody
   public String test() {
-    String test = "test";
+    String test = "test_test";
     return test;
   }
 }
