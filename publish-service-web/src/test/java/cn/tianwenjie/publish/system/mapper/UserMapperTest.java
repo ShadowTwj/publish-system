@@ -20,6 +20,6 @@ public class UserMapperTest {
 
   @Test
   public void insertUserTest(){
-    userMapper.insertUser(User.builder().account("admin").password("123455").nickname("admin").creater("system").createTime(new Date()).updateTime(new Date()).build());
+//    userMapper.insertUser(User.builder().account("admin").password("123455").nickname("admin").creater("system").createTime(new Date()).updateTime(new Date()).build());
   }
 }
