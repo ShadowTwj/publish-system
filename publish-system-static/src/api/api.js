@@ -33,5 +33,5 @@ export const editUser = params => {
 };
 
 export const addUser = params => {
-    return axios.get(`${base}/user/add`, {params: params});
+    return axios.post(`${base}/user/add`, params, {headers: header}).then(res => res.data);
 };

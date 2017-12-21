@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tianwj on 2017/12/4.
@@ -37,5 +39,18 @@ public class UserService {
     }
 
     throw new PasswordException("密码错误");
+  }
+
+  public List<User> getUserList() {
+    return userMapper.findAll();
+  }
+
+  public int addUser(User user) {
+    if (user.getNickname() == null || user.getNickname().isEmpty()) {
+      user.setNickname(user.getAccount());
+    }
+    user.setCreateTime(new Date());
+    user.setUpdateTime(new Date());
+    return userMapper.insertUser(user);
   }
 }

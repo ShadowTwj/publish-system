@@ -19,7 +19,7 @@ public class User {
   private String account;
   private String password;
   private String nickname;
-  private int githubId;
+  private String token;
   private String creater;
   private Date createTime;
   private Date updateTime;

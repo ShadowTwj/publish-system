@@ -1,6 +1,6 @@
 <template>
     <el-row class="container">
-        <el-col :span="26" class="header">
+        <el-col :span="26" class="header" style="background-color: #f9800a">
             <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed?'':sysName}}
             </el-col>
