@@ -4,6 +4,7 @@
       <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{12} %X{traceId} %X{userId} %msg%n</pattern>
     </encoder>
   </appender>
+
   <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!-- 可让每天产生一个日志文件，最多 7 个，自动回滚 -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -40,7 +41,9 @@
 
   <!-- 异步输出日志避免阻塞服务 -->
   <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
     <queueSize>512</queueSize>
+    <!-- 添加附加的appender,最多只能添加一个 -->
     <appender-ref ref="RollingFile"/>
   </appender>
 
@@ -52,5 +55,6 @@
 
   <root level="INFO">
     <appender-ref ref="ASYNC"/>
+    <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

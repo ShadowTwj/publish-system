@@ -13,25 +13,29 @@ export const requestLogin = params => {
 };
 
 export const getUserList = params => {
-    return axios.get(`${base}/user/list`, {params: params});
+    return axios.get(`${base}/user/list`);
 };
 
-export const getUserListPage = params => {
-    return axios.get(`${base}/user/listpage`, {params: params});
-};
+// export const getUserListPage = params => {
+//     return axios.get(`${base}/user/listpage`, {params: params});
+// };
 
 export const removeUser = params => {
-    return axios.get(`${base}/user/remove`, {params: params});
+    return axios.post(`${base}/user/remove`, params, {headers: header}).then(res => res.data);
 };
 
 export const batchRemoveUser = params => {
-    return axios.get(`${base}/user/batchremove`, {params: params});
+    return axios.post(`${base}/user/batchRemove`, params, {headers: header}).then(res => res.data);
 };
 
 export const editUser = params => {
-    return axios.get(`${base}/user/edit`, {params: params});
+    return axios.post(`${base}/user/edit`, params, {headers: header}).then(res => res.data);
 };
 
 export const addUser = params => {
     return axios.post(`${base}/user/add`, params, {headers: header}).then(res => res.data);
+};
+
+export const findAccount = params => {
+    return axios.get(`${base}/user/findAccount?account=` + params).then(res => res.data);
 };

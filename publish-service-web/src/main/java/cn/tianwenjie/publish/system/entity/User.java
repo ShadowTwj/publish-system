@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -18,6 +19,8 @@ public class User {
   private int id;
   private String account;
   private String password;
+  @Transient
+  private String checkPass;
   private String nickname;
   private String token;
   private String creater;

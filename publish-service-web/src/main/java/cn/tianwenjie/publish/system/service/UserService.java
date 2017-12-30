@@ -3,9 +3,11 @@ package cn.tianwenjie.publish.system.service;
 import cn.tianwenjie.publish.system.entity.User;
 import cn.tianwenjie.publish.system.exception.*;
 import cn.tianwenjie.publish.system.mapper.UserMapper;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ public class UserService {
   @Resource
   private UserMapper userMapper;
 
-  public User login(String account, String password) throws LogInException {
+  public User login(@NonNull String account, @NonNull String password) throws LogInException {
     if (account == null || account.trim().isEmpty()) {
       throw new UserNameNotFoundException("用户名为空");
     }
@@ -45,12 +47,28 @@ public class UserService {
     return userMapper.findAll();
   }
 
-  public int addUser(User user) {
+  public int addUser(@NonNull User user) {
     if (user.getNickname() == null || user.getNickname().isEmpty()) {
       user.setNickname(user.getAccount());
     }
     user.setCreateTime(new Date());
     user.setUpdateTime(new Date());
     return userMapper.insertUser(user);
+  }
+
+  public User findAccount(@NonNull String account) {
+    return userMapper.findByAccount(account);
+  }
+
+  public int remove(@NonNull String id) {
+    return userMapper.deleteUser(Integer.parseInt(id));
+  }
+
+  public int edit(@NonNull User user) {
+    return userMapper.updateUser(user);
+  }
+
+  public int batchRemove(@Nonnull List<String> idList){
+    return userMapper.batchDeleteUser(idList);
   }
 }

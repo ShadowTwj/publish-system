@@ -99,6 +99,7 @@
       <!--<artifactId>postgresql</artifactId>-->
       <!--<version>9.4.1207</version>-->
     <!--</dependency>-->
+
     <!--logback-->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -145,6 +146,12 @@
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
       <version>0.1.54</version>
+    </dependency>
+    <!--JPA-->
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0.2</version>
     </dependency>
   </dependencies>
 
