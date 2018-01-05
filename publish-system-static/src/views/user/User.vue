@@ -1,19 +1,22 @@
 <template>
     <section>
         <!--工具条-->
-        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-form-item>
-                    <el-input v-model="filters.keyword" placeholder="关键字"></el-input>
-                </el-form-item>
-                <!--<el-form-item>-->
-                    <!--<el-button type="primary" v-on:click="userList">查询</el-button>-->
-                <!--</el-form-item>-->
-                <el-form-item>
-                    <el-button type="primary" @click="handleAdd">新增</el-button>
-                </el-form-item>
-            </el-form>
-        </el-col>
+        <el-row :span="24" class="toolbar" style="padding-bottom: 0px;">
+            <el-col :span="12">
+                <el-form :inline="true" :model="filters" class="grid-content bg-purple">
+                    <el-form-item>
+                        <el-input v-model="filters.keyword" placeholder="关键字"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="1" :offset="11">
+                <el-form class="grid-content bg-purple-light">
+                    <el-form-item>
+                        <el-button type="primary" @click="handleAdd">新增</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
 
         <!--列表-->
         <el-table :data="userList" highlight-current-row v-loading="table.loading" element-loading-text="拼命加载中" @selection-change="selsChange" style="width: 100%;">
@@ -21,19 +24,19 @@
             </el-table-column>
             <el-table-column type="index" width="60">
             </el-table-column>
-            <el-table-column prop="account" label="账号" width="180" sortable>
+            <el-table-column prop="account" label="账号" sortable>
             </el-table-column>
-            <el-table-column prop="password" label="密码" width="180" sortable>
+            <!--<el-table-column prop="password" label="密码" sortable>-->
+            <!--</el-table-column>-->
+            <el-table-column prop="nickname" label="昵称" sortable>
             </el-table-column>
-            <el-table-column prop="nickname" label="昵称" width="180" sortable>
+            <el-table-column prop="token" label="token" min-width="100" sortable>
             </el-table-column>
-            <el-table-column prop="token" label="token" width="180" sortable>
+            <el-table-column prop="creater" label="创建人" sortable>
             </el-table-column>
-            <el-table-column prop="creater" label="创建人" width="180" sortable>
+            <el-table-column prop="createTime" label="创建时间" min-width="150" sortable>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="180" sortable>
-            </el-table-column>
-            <el-table-column prop="updateTime" label="修改时间" width="180" sortable>
+            <el-table-column prop="updateTime" label="修改时间" min-width="150" sortable>
             </el-table-column>
             <el-table-column label="操作" min-width="150">
                 <template scope="scope">
@@ -52,7 +55,7 @@
                     @size-change="handleSizeChange"
                     :current-page="table.page" :page-sizes="[10, 25, 50]" :page-size="table.size"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="table.data.length" style="float:right">
+                    :total="userList.length" style="float:right">
             </el-pagination>
         </el-col>
 
@@ -127,18 +130,16 @@
             var accountValidate = (rule, value, callback) => {
                 if (value.trim().length > 0) {
                     findAccount(value).then((data) => {
-                        if (data.code > 0) {
-                            if (data.code === 1) {
-                                this.accountDisabled = true;
-                                if (this.accountDisabled && this.passwordDisabled && this.checkPassDisabled) {
-                                    this.isDisabled = false;
-                                }
-                                callback();
-                            } else {
-                                this.accountDisabled = false;
-                                this.isDisabled = true;
-                                callback(new Error('该账号已存在'));
+                        if (data.type === 'success') {
+                            this.accountDisabled = true;
+                            if (this.accountDisabled && this.passwordDisabled && this.checkPassDisabled) {
+                                this.isDisabled = false;
                             }
+                            callback();
+                        } else if (data.type === 'warning') {
+                            this.accountDisabled = false;
+                            this.isDisabled = true;
+                            callback(new Error('该账号已存在'));
                         }
                     })
                 } else {
@@ -303,10 +304,10 @@
             userList: function () {
                 var self = this, data = self.table.data, page = self.table.page, size = self.table.size, keyword = self.filters.keyword;
                 var v = data.filter(function (p) {
-                    return (p.account && p.account.indexOf(keyword) !== -1 )
-                        || (p.password && p.password.indexOf(keyword) !== -1 )
-                        || (p.nickname && p.nickname.indexOf(keyword) !== -1 )
-                        || (p.creater && p.creater.indexOf(keyword) !== -1 )
+                    return (p.account && p.account.indexOf(keyword) !== -1)
+                        || (p.password && p.password.indexOf(keyword) !== -1)
+                        || (p.nickname && p.nickname.indexOf(keyword) !== -1)
+                        || (p.creater && p.creater.indexOf(keyword) !== -1)
                 });
                 v = v.slice((page - 1) * size, page * size);
                 return v;
@@ -355,8 +356,9 @@
                     removeUser(para).then((res) => {
                         this.table.loading = false;
                         //NProgress.done();
-                        let {message, type, code} = res;
+                        let {message, type} = res;
                         this.$message({
+                            showClose: true,
                             message: message,
                             type: type
                         });
@@ -404,6 +406,7 @@
                                 this.editLoading = false;
                                 //NProgress.done();
                                 this.$message({
+                                    showClose: true,
                                     message: '提交成功',
                                     type: 'success'
                                 });
@@ -427,8 +430,9 @@
                             addUser(para).then((data) => {
                                 this.addLoading = false;
                                 //NProgress.done();
-                                let {message, type, code} = data;
+                                let {message, type} = data;
                                 this.$message({
+                                    showClose: true,
                                     message: message,
                                     type: type
                                 });
@@ -455,8 +459,9 @@
                     batchRemoveUser(para).then((res) => {
                         this.table.loading = false;
                         //NProgress.done();
-                        let {message, type, code} = res;
+                        let {message, type} = res;
                         this.$message({
+                            showClose: true,
                             message: message,
                             type: type
                         });

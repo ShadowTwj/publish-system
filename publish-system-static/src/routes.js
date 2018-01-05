@@ -5,7 +5,7 @@ import Main from './views/Main.vue'
 import User from './views/user/User.vue'
 import History from './views/publish/History.vue'
 import Publish from './views/publish/Publish.vue'
-import Page4 from './views/manage/Page4.vue'
+import Project from './views/manage/Project.vue'
 import Page5 from './views/manage/Page5.vue'
 import Page6 from './views/manage/Page6.vue'
 import echarts from './views/statistics/echarts.vue'
@@ -41,7 +41,7 @@ let routes = [
         name: '管理',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/page4', component: Page4, name: '项目管理' },
+            { path: '/Project', component: Project, name: '项目管理' },
             { path: '/page5', component: Page5, name: '环境管理' },
             { path: '/page6', component: Page6, name: '绑定token' },
         ]

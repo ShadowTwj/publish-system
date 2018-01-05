@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BackResult {
+public class BaseResult {
   private String message;
   private String type;
-  private int code;
 }
