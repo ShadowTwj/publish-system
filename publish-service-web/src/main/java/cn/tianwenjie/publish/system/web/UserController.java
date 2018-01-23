@@ -27,9 +27,9 @@ public class UserController {
   @Resource
   private UserService userService;
 
-  public static final String SUCCESS = "success";
-  public static final String ERROR = "error";
-  public static final String WARNING = "warning";
+  private static final String SUCCESS = "success";
+  private static final String ERROR = "error";
+  private static final String WARNING = "warning";
 
 
   @RequestMapping(value = "list", method = RequestMethod.GET)

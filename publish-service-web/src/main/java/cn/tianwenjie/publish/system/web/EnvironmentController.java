@@ -1,8 +1,8 @@
 package cn.tianwenjie.publish.system.web;
 
 import cn.tianwenjie.publish.system.bean.BaseResult;
-import cn.tianwenjie.publish.system.entity.Project;
-import cn.tianwenjie.publish.system.service.ProjectService;
+import cn.tianwenjie.publish.system.entity.Environment;
+import cn.tianwenjie.publish.system.service.EnvironmentService;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -13,61 +13,65 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.sql.SQLNonTransientException;
 import java.util.List;
 
 /**
  * @author tianwj
- * @date 2018/1/3
+ * @date 2018/1/23
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/project/")
+@RequestMapping(value = "/environment/")
 @SuppressWarnings("Duplicates")
-public class ProjectController {
+public class EnvironmentController {
   @Resource
-  private ProjectService projectService;
+  private EnvironmentService environmentService;
 
   private static final String SUCCESS = "success";
   private static final String WARNING = "warning";
   private static final String ERROR = "error";
 
   @RequestMapping(value = "list", method = RequestMethod.GET)
-  public List<Project> getProjectList() {
+  public List<Environment> getEnvironmentList() {
     try {
-      return projectService.getProjectList();
+      return environmentService.getEnvironmentList();
     } catch (Exception e) {
-      log.error("getProjectList error", e);
+      log.error("getEnvironmentList error ", e);
       return Lists.newArrayList();
     }
   }
 
   @RequestMapping(value = "add", method = RequestMethod.POST)
-  public BaseResult addProject(@RequestBody Project project) {
+  public BaseResult addEnvironment(@RequestBody Environment environment) {
     BaseResult baseResult = BaseResult.builder().build();
-    if (project == null) {
+    if (environment == null) {
       baseResult.setType(ERROR);
-      baseResult.setMessage("缺少项目信息");
+      baseResult.setMessage("缺少环境信息");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getUniqueName())) {
+
+    if (Strings.isNullOrEmpty(environment.getIp())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写唯一标识");
+      baseResult.setMessage("请填写ip地址");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getGit())) {
+
+    if (Strings.isNullOrEmpty(environment.getUserName())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写Git地址");
+      baseResult.setMessage("请填写该服务器的登录用户名");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getManager())) {
+
+    if (Strings.isNullOrEmpty(environment.getPassword())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写负责人");
+      baseResult.setMessage("请填写该服务器的登录密码");
       return baseResult;
     }
-    //todo:判断Git地址是否正确
+
+    //todo 判断ip是否正确，是否能登录成功
+
     try {
-      int result = projectService.addProject(project);
+      int result = environmentService.insertEnvironment(environment);
       if (result == 1) {
         baseResult.setType(SUCCESS);
         baseResult.setMessage("新增成功");
@@ -76,44 +80,44 @@ public class ProjectController {
         baseResult.setMessage("保存失败");
       }
     } catch (Exception e) {
-      log.error("addProject error, project{}", project, e);
-      if (e.getCause() instanceof SQLNonTransientException) {//使用数据库唯一索引
-        baseResult.setType(WARNING);
-        baseResult.setMessage("唯一标识已存在");
-      } else {
-        baseResult.setType(ERROR);
-        baseResult.setMessage("新增失败");
-      }
+      log.error("addEnvironment error, environment={} ", environment, e);
+      baseResult.setType(ERROR);
+      baseResult.setMessage("新增失败");
     }
     return baseResult;
   }
 
   @RequestMapping(value = "edit", method = RequestMethod.POST)
-  public BaseResult editProject(@RequestBody Project project) {
+  public BaseResult editEnvironment(@RequestBody Environment environment) {
     BaseResult baseResult = BaseResult.builder().build();
-    if (project == null) {
+    if (environment == null) {
       baseResult.setType(ERROR);
-      baseResult.setMessage("缺少项目信息");
+      baseResult.setMessage("缺少环境信息");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getUniqueName())) {
+
+    if (Strings.isNullOrEmpty(environment.getIp())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写唯一标识");
+      baseResult.setMessage("请填写ip地址");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getGit())) {
+
+    if (Strings.isNullOrEmpty(environment.getUserName())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写Git地址");
+      baseResult.setMessage("请填写该服务器的登录用户名");
       return baseResult;
     }
-    if (Strings.isNullOrEmpty(project.getManager())) {
+
+    if (Strings.isNullOrEmpty(environment.getPassword())) {
       baseResult.setType(WARNING);
-      baseResult.setMessage("请填写负责人");
+      baseResult.setMessage("请填写该服务器的登录密码");
       return baseResult;
     }
-    //todo:判断Git地址是否正确
+
+    //todo 判断ip是否正确，是否能登录成功
+
     try {
-      int result = projectService.editProject(project);
+      int result = environmentService.updateEnvironment(environment);
       if (result == 1) {
         baseResult.setType(SUCCESS);
         baseResult.setMessage("编辑成功");
@@ -122,25 +126,19 @@ public class ProjectController {
         baseResult.setMessage("保存失败");
       }
     } catch (Exception e) {
-      log.error("editProject error, project{}", project, e);
-      if (e.getCause() instanceof SQLNonTransientException) {//使用数据库唯一索引
-        baseResult.setType(WARNING);
-        baseResult.setMessage("唯一标识已存在");
-      } else {
-        baseResult.setType(ERROR);
-        baseResult.setMessage("" +
-          " ");
-      }
+      log.error("editEnvironment error, environment={} ", environment, e);
+      baseResult.setType(ERROR);
+      baseResult.setMessage("编辑失败");
     }
     return baseResult;
   }
 
   @RequestMapping(value = "remove", method = RequestMethod.POST)
-  public BaseResult removeProject(@RequestBody String data) {
+  public BaseResult removeEnvironment(@RequestBody String data){
     BaseResult baseResult = BaseResult.builder().build();
     try {
       int id = JSONObject.parseObject(data).getInteger("id");
-      int result = projectService.remove(id);
+      int result = environmentService.remove(id);
       if (result == 1) {
         baseResult.setType(SUCCESS);
         baseResult.setMessage("删除成功");
@@ -149,12 +147,10 @@ public class ProjectController {
         baseResult.setMessage("删除失败");
       }
     } catch (Exception e) {
-      log.error("removeProject error, {}", data, e);
+      log.error("removeEnvironment error, {}", data, e);
       baseResult.setType(ERROR);
       baseResult.setMessage("删除失败");
     }
     return baseResult;
   }
-
-
 }

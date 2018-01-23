@@ -55,3 +55,19 @@ export const editProject = params => {
 export const removeProject = params => {
     return axios.post(`${base}/project/remove`, params, {headers: header}).then(res => res.data);
 };
+
+export const getEnvironmentList = () => {
+    return axios.get(`${base}/environment/list`).then(res => res.data);
+};
+
+export const addEnvironment = params => {
+    return axios.post(`${base}/environment/add`, params, {headers: header}).then(res => res.data);
+};
+
+export const editEnvironment = params => {
+    return axios.post(`${base}/environment/edit`, params, {headers: header}).then(res => res.data);
+};
+
+export const removeEnvironment = params => {
+    return axios.post(`${base}/environment/remove`, params, {headers: header}).then(res => res.data);
+};
