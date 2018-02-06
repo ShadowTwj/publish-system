@@ -71,3 +71,8 @@ export const editEnvironment = params => {
 export const removeEnvironment = params => {
     return axios.post(`${base}/environment/remove`, params, {headers: header}).then(res => res.data);
 };
+
+//publish
+export const publishInit = () => {
+  return axios.get(`${base}/publish/init`).then(res => res.data);
+};

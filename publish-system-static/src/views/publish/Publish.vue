@@ -1,13 +1,12 @@
 <template>
-    <el-form ref="form" :model="form" :rules="form.rules" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
+    <el-form ref="form" :model="form.data" :rules="form.rules" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
 
         <el-form-item label="选择项目" prop="projectId">
             <el-select v-model="form.data.projectId" :loading="init.loading" loading-text="加载中" filterable placeholder="请选择" @change="handleProjectChange">
                 <el-option
                         v-for="item in init.projects"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :label="item.uniqueName"
+                        :value="item.id">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -37,7 +36,7 @@
                 <el-radio label="线下场地免费"></el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item label="活动形式">
+        <el-form-item label="活动形式">npm
             <el-input type="textarea" v-model="form.desc"></el-input>
         </el-form-item>
         <el-form-item>
@@ -48,12 +47,14 @@
 </template>
 
 <script>
+    import {publishInit} from '../../api/api'
+
     export default {
         data() {
             return {
                 init: {
                     loading: true,
-                    projects: '',
+                    projects: [],
                 },
                 form: {
                     data: {
@@ -68,12 +69,26 @@
             }
         },
         methods: {
+            initData() {
+                this.init.loading = true;
+                publishInit().then((response) => {
+                    if (response.type === 'success') {
+                        this.init.projects = response.data.projects;
+                    } else {
+
+                    }
+                    this.init.loading = false;
+                });
+            },
             handleProjectChange() {
 
             },
             onSubmit() {
                 console.log('submit!');
             }
+        },
+        mounted() {
+            this.initData();
         }
     }
 
