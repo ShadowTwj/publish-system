@@ -128,8 +128,7 @@ public class ProjectController {
         baseResult.setMessage("唯一标识已存在");
       } else {
         baseResult.setType(ERROR);
-        baseResult.setMessage("" +
-          " ");
+        baseResult.setMessage("编辑失败");
       }
     }
     return baseResult;

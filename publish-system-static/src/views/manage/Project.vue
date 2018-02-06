@@ -123,8 +123,12 @@
                         module: '',
                         manager: '',
                         remark: '',
+                        status: '',
+                        createTime: '',
                         createUser: '',
-                        updateUser: ''
+                        updateTime: '',
+                        updateUser: '',
+                        timeRestrict: ''
                     },
                     rules: {
                         uniqueName: [
@@ -179,14 +183,28 @@
                 this.form.data.module = '';
                 this.form.data.manager = '';
                 this.form.data.remark = '';
+                this.form.data.status = '';
+                this.form.data.createTime = '';
                 this.form.data.createUser = this.userName;
+                this.form.data.updateTime = '';
                 this.form.data.updateUser = this.userName;
+                this.form.data.timeRestrict = '';
             },
             handleEdit: function (index, row) {
                 this.form.visible = true;
                 this.form.title = '编辑';
-                this.form.data = this.table.data[index];
+                this.form.data.id = row.id;
+                this.form.data.uniqueName = row.uniqueName;
+                this.form.data.git = row.git;
+                this.form.data.module = row.module;
+                this.form.data.manager = row.manager;
+                this.form.data.remark = row.remark;
+                this.form.data.status = row.status;
+                this.form.data.createTime = row.createTime;
+                this.form.data.createUser = row.createUser;
+                this.form.data.updateTime = row.updateTime;
                 this.form.data.updateUser = this.userName;
+                this.form.data.timeRestrict = row.timeRestrict;
             },
             submit: function () {
                 this.$refs.form.validate((valid) => {

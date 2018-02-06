@@ -73,8 +73,8 @@
                 <el-form-item label="密码" prop="password">
                     <el-input type=password v-model="form.data.password" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="状态" :disabled="true">
-                    <el-input v-model="form.data.status" auto-complete="off"></el-input>
+                <el-form-item label="状态">
+                    <el-input v-model="form.data.status" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="说明">
                     <el-input type="textarea" v-model="form.data.remark"></el-input>
@@ -192,7 +192,16 @@
             handleEdit: function (index, row) {
                 this.form.visible = true;
                 this.form.title = '编辑';
-                this.form.data = this.table.data[index];
+                this.form.data.id = row.id;
+                this.form.data.uniqueName = row.uniqueName;
+                this.form.data.ip = row.ip;
+                this.form.data.userName = row.userName;
+                this.form.data.password = row.password;
+                this.form.data.status = row.status;
+                this.form.data.remark = row.remark;
+                this.form.data.createTime = row.createTime;
+                this.form.data.createUser = row.createUser;
+                this.form.data.updateTime = row.updateTime;
                 this.form.data.updateUser = this.userName;
             },
             submit: function () {

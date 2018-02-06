@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-  private int id;
+  private Integer id;
   private String account;
   private String password;
   @Transient

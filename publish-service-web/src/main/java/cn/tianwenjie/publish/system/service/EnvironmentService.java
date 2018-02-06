@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,10 +25,13 @@ public class EnvironmentService {
   }
 
   public int insertEnvironment(@NonNull Environment environment) {
+    environment.setCreateTime(new Date());
+    environment.setUpdateTime(new Date());
     return environmentMapper.insertEnvironment(environment);
   }
 
   public int updateEnvironment(@NonNull Environment environment) {
+    environment.setUpdateTime(new Date());
     return environmentMapper.updateEnvironment(environment);
   }
 

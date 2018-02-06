@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.sql.SQLNonTransientException;
 import java.util.List;
 
 /**
@@ -81,8 +82,15 @@ public class EnvironmentController {
       }
     } catch (Exception e) {
       log.error("addEnvironment error, environment={} ", environment, e);
-      baseResult.setType(ERROR);
-      baseResult.setMessage("新增失败");
+      //使用数据库唯一索引
+      if (e.getCause() instanceof SQLNonTransientException) {
+        log.error("唯一标示已存在,unique_name={}", environment.getUniqueName());
+        baseResult.setType(WARNING);
+        baseResult.setMessage("唯一标识已存在");
+      } else {
+        baseResult.setType(ERROR);
+        baseResult.setMessage("新增失败");
+      }
     }
     return baseResult;
   }
@@ -127,14 +135,20 @@ public class EnvironmentController {
       }
     } catch (Exception e) {
       log.error("editEnvironment error, environment={} ", environment, e);
-      baseResult.setType(ERROR);
-      baseResult.setMessage("编辑失败");
+      //使用数据库唯一索引
+      if (e.getCause() instanceof SQLNonTransientException) {
+        baseResult.setType(WARNING);
+        baseResult.setMessage("唯一标识已存在");
+      } else {
+        baseResult.setType(ERROR);
+        baseResult.setMessage("编辑失败");
+      }
     }
     return baseResult;
   }
 
   @RequestMapping(value = "remove", method = RequestMethod.POST)
-  public BaseResult removeEnvironment(@RequestBody String data){
+  public BaseResult removeEnvironment(@RequestBody String data) {
     BaseResult baseResult = BaseResult.builder().build();
     try {
       int id = JSONObject.parseObject(data).getInteger("id");

@@ -9,22 +9,26 @@ import java.util.Date;
 
 /**
  * @author tianwj
- * @date 2018/1/5
+ * @date 2018/2/5
  */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Environment {
+public class PublishConf {
   private Integer id;
-  private String uniqueName;
-  private String ip;
-  private String userName;
-  private String password;
-  private Integer status;
+  private Integer projectId;
+  private Integer environmentId;
+  private String environmentUniqueName;
+  private String tomcatContextPath;
+  /**
+   * 实体个数
+   */
+  private Integer replicas;
+  private String ports;
   private String remark;
-  private Date createTime;
   private String createUser;
-  private Date updateTime;
+  private Date createTime;
   private String updateUser;
+  private Date updateTime;
 }
