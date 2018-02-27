@@ -40,6 +40,7 @@ export const findAccount = params => {
     return axios.get(`${base}/user/findAccount?account=` + params).then(res => res.data);
 };
 
+//project
 export const getProjectList = () => {
     return axios.get(`${base}/project/list`).then(res => res.data);
 };
@@ -56,6 +57,7 @@ export const removeProject = params => {
     return axios.post(`${base}/project/remove`, params, {headers: header}).then(res => res.data);
 };
 
+//environment
 export const getEnvironmentList = () => {
     return axios.get(`${base}/environment/list`).then(res => res.data);
 };
@@ -74,5 +76,29 @@ export const removeEnvironment = params => {
 
 //publish
 export const publishInit = () => {
-  return axios.get(`${base}/publish/init`).then(res => res.data);
+    return axios.get(`${base}/publish/init`).then(res => res.data);
+};
+
+export const publishInitBranch = params => {
+    return axios.post(`${base}/publish/init/branch`, params, {headers: header}).then(res => res.data);
+};
+
+export const publishInitConfig = params => {
+    return axios.get(`${base}/publish/init/config?projectId=` + params).then(res => res.data);
+};
+
+export const publishInitEnvironment = () => {
+    return axios.get(`${base}/publish/init/environment`).then(res => res.data);
+};
+
+export const publishAddConfig = params => {
+    return axios.post(`${base}/publish/config/add-config`, params, {headers: header}).then(res => res.data);
+};
+
+export const publishEditConfig = params => {
+    return axios.post(`${base}/publish/config/edit-config`, params, {headers: header}).then(res => res.data);
+};
+
+export const publishDelConfig = params => {
+    return axios.post(`${base}/publish/config/del-config`, params, {headers: header}).then(res => res.data);
 };

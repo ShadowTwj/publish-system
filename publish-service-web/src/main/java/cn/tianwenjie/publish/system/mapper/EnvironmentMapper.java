@@ -24,6 +24,15 @@ public interface EnvironmentMapper {
   List<Environment> findAll();
 
   /**
+   * 根据environmentId获取environment unique_name
+   *
+   * @param id
+   * @return
+   */
+  @Select("SELECT unique_name FROM environment WHERE id = ${id}")
+  String findNameById(@Param("id") Integer id);
+
+  /**
    * insert environment
    *
    * @param environment
@@ -40,9 +49,10 @@ public interface EnvironmentMapper {
    * @param environment
    * @return
    */
-  @Update("UPDATE environment SET unique_name=#{environment.uniqueName}, ip=#{environment.ip}, user_name=#{environment.userName}, `password`=#{environment.password}, \n" +
-            "`status`=${environment.status}, remark=#{environment.remark}, create_time=#{environment.createTime}, create_user=#{environment.createUser}, update_time=#{environment.updateTime}, \n" +
-            "update_user=#{environment.updateUser} WHERE id=${environment.id}")
+  @Update(
+    "UPDATE environment SET unique_name=#{environment.uniqueName}, ip=#{environment.ip}, user_name=#{environment.userName}, `password`=#{environment.password}, \n" +
+      "`status`=${environment.status}, remark=#{environment.remark}, create_time=#{environment.createTime}, create_user=#{environment.createUser}, update_time=#{environment.updateTime}, \n" +
+      "update_user=#{environment.updateUser} WHERE id=${environment.id}")
   int updateEnvironment(@Param("environment") Environment environment);
 
   /**

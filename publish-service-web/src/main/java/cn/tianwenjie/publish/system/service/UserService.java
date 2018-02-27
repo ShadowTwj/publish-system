@@ -71,4 +71,8 @@ public class UserService {
   public int batchRemove(@Nonnull List<String> idList){
     return userMapper.batchDeleteUser(idList);
   }
+
+  public String getToken(@NonNull String account){
+    return userMapper.getTokenByAccount(account);
+  }
 }

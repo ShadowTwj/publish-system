@@ -28,4 +28,7 @@ public interface ProjectMapper {
 
   @Delete("DELETE FROM project WHERE id=${id}")
   int deleteProject(@Param("id") int id);
+
+  @Select("SELECT git FROM project WHERE id=${id}")
+  String getGitById(@Param("id") Integer id);
 }

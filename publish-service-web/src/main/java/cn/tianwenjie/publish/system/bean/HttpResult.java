@@ -1,6 +1,5 @@
 package cn.tianwenjie.publish.system.bean;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

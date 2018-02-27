@@ -29,4 +29,7 @@ public interface UserMapper {
   int updateUser(@Param("user") User user);
 
   int batchDeleteUser(@Param("idList") List<String> idList);
+
+  @Select("SELECT token FROM user WHERE account=#{account}")
+  String getTokenByAccount(@Param("account") String account);
 }
