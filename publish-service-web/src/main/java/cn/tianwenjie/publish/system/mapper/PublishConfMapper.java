@@ -24,6 +24,15 @@ public interface PublishConfMapper {
   List<PublishConf> findByProjectId(@Param("projectId") Integer projectId);
 
   /**
+   * 根据id来获取publishConfig
+   *
+   * @param id
+   * @return
+   */
+  @Select("SELECT * FROM publish_conf WHERE id = ${id}")
+  PublishConf findById(@Param("id") Integer id);
+
+  /**
    * insert publishConfig
    *
    * @param publishConf

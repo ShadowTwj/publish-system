@@ -476,7 +476,7 @@
                 var user = sessionStorage.getItem('user');
                 if (user) {
                     user = JSON.parse(user);
-                    this.userName = user.nickname;
+                    this.userName = user.account;
                 }
             },
         },

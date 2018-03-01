@@ -7,7 +7,7 @@ import PublishHistory from './views/publish/PublishHistory.vue'
 import Publish from './views/publish/Publish.vue'
 import Project from './views/manage/Project.vue'
 import Environment from './views/manage/Environment.vue'
-import Page6 from './views/manage/Page6.vue'
+import Token from './views/manage/Token.vue'
 import echarts from './views/statistics/echarts.vue'
 
 let routes = [
@@ -43,7 +43,7 @@ let routes = [
         children: [
             {path: '/project', component: Project, name: '项目管理'},
             {path: '/environment', component: Environment, name: '环境管理'},
-            {path: '/page6', component: Page6, name: '绑定token'},
+            {path: '/token', component: Token, name: '绑定token'},
         ]
     },
     {

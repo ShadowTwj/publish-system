@@ -20,7 +20,7 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="选择配置" prop="publishConfList">
+            <el-form-item label="选择配置" prop="configList">
                 <el-col :span="24">
                     <el-form :inline="true">
                         <el-form-item>
@@ -52,7 +52,7 @@
                 <el-input type="textarea" v-model="form.data.remark"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit" :disabled="form.data.projectId === ''">立即发布</el-button>
+                <el-button type="primary" @click.native="onSubmit" :loading="form.loading" :disabled="form.data.projectId === ''">立即发布</el-button>
                 <el-button @click="publishHistory">发布历史</el-button>
             </el-form-item>
         </el-form>
@@ -99,7 +99,16 @@
 </template>
 
 <script>
-    import {publishInit, publishInitBranch, publishInitConfig, publishInitEnvironment, publishAddConfig, publishEditConfig, publishDelConfig} from '../../api/api';
+    import {
+        publishInit,
+        publishInitBranch,
+        publishInitConfig,
+        publishInitEnvironment,
+        publishAddConfig,
+        publishEditConfig,
+        publishDelConfig,
+        publish
+    } from '../../api/api';
     import util from '../../utils/util';
 
     export default {
@@ -116,10 +125,21 @@
                 form: {
                     loading: false,
                     data: {
+                        id: '',
+                        publishConfId: '',
                         projectId: '',
+                        projectName: '',
+                        environmentId: '',
+                        environmentName: '',
                         branch: '',
-                        configId: '',
-                        remark: ''
+                        remark: '',
+                        status: '',
+                        costTime: '',
+                        createUser: '',
+                        createTime: '',
+                        updateUser: '',
+                        updateTime: '',
+                        configList: []
                     },
                     rules: {
                         projectId: [
@@ -128,7 +148,7 @@
                         branch: [
                             {type: "string", required: true, message: '请选择分支', trigger: 'blur'}
                         ],
-                        publishConfList: [
+                        configList: [
                             {type: 'array', required: true, message: '请勾选配置信息', trigger: 'blur'}
                         ],
                     }
@@ -217,8 +237,14 @@
                     util.error();
                 });
             },
+            //选择配置
             handleSelectionChange(v) {
-
+                this.form.data.configList = v;
+                if (this.form.data.configList.length > 1) {
+                    util.warning("一次发布只能选择一个配置");
+                } else if (this.form.data.configList.length === 1) {
+                    this.form.data.publishConfId = this.form.data.configList[0].id;
+                }
             },
             //获取环境
             getEnvironment() {
@@ -269,7 +295,7 @@
                 this.config.data.replicas = row.replicas;
                 this.config.data.ports = row.ports;
                 this.config.data.remark = row.remark;
-                this.config.data.createUser = row.userName;
+                this.config.data.createUser = row.createUser;
                 this.config.data.createTime = row.createTime;
                 this.config.data.updateUser = this.userName;
                 this.config.data.updateTime = row.updateTime;
@@ -342,17 +368,41 @@
                 var user = sessionStorage.getItem('user');
                 if (user) {
                     user = JSON.parse(user);
-                    this.userName = user.nickname;
+                    this.userName = user.account;
                 }
             },
+            //发布
             onSubmit() {
-                console.log('submit!');
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        if (this.form.data.configList.length > 1) {
+                            util.warning("一次发布只能选择一个配置")
+                            return;
+                        }
+
+                        this.form.data.createUser = this.userName;
+                        this.form.data.updateUser = this.userName;
+                        publish(this.form.data).then((response) => {
+                            if (response.type === "success") {
+                                util.success(response.message);
+                            } else if (response.type === "error") {
+                                util.error(response.message);
+                            } else {
+                                util.warning(response.message);
+                            }
+                        }, () => {
+                            util.error();
+                        });
+                    } else {
+                        return false;
+                    }
+                });
             },
             publishHistory() {
 
             }
         },
-        mounted() {
+            mounted() {
             this.initData();
             this.getUserName();
         }

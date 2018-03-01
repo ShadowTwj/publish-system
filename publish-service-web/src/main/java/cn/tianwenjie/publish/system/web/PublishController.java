@@ -3,13 +3,16 @@ package cn.tianwenjie.publish.system.web;
 import cn.tianwenjie.publish.system.bean.HttpResult;
 import cn.tianwenjie.publish.system.entity.Environment;
 import cn.tianwenjie.publish.system.entity.Project;
+import cn.tianwenjie.publish.system.entity.Publish;
 import cn.tianwenjie.publish.system.entity.PublishConf;
 import cn.tianwenjie.publish.system.service.EnvironmentService;
 import cn.tianwenjie.publish.system.service.ProjectService;
 import cn.tianwenjie.publish.system.service.PublishConfService;
+import cn.tianwenjie.publish.system.service.PublishService;
 import cn.tianwenjie.publish.system.service.UserService;
 import cn.tianwenjie.publish.system.utils.GitHubUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +44,8 @@ public class PublishController {
   private PublishConfService publishConfService;
   @Resource
   private EnvironmentService environmentService;
+  @Resource
+  private PublishService publishService;
 
   @RequestMapping(value = "init", method = RequestMethod.GET)
   public HttpResult initPublish() {
@@ -98,7 +103,7 @@ public class PublishController {
     } catch (Exception e) {
       log.error("init publish conf error,git={},token={}", git, token, e);
       httpResult.error();
-      httpResult.setMessage("错误：获取分支、Tag失败，请检查git地址等是否正确");
+      httpResult.setMessage("错误：获取分支、Tag失败，请检查git地址等是否正确或token是否过期");
       return httpResult;
     }
 
@@ -237,7 +242,7 @@ public class PublishController {
 
     if (id == null) {
       httpResult.error();
-      httpResult.setMessage("缺少Id");
+      httpResult.setMessage("缺少配置Id");
       return httpResult;
     }
 
@@ -254,6 +259,52 @@ public class PublishController {
       log.error("update publishConfig error,publishConfigId={}", id, e);
       httpResult.error();
       httpResult.setMessage("删除配置失败");
+    }
+
+    return httpResult;
+  }
+
+  @RequestMapping(value = "publish", method = RequestMethod.POST)
+  public HttpResult publish(@RequestBody Publish publish) {
+    HttpResult httpResult = new HttpResult();
+
+    if (publish == null) {
+      httpResult.error();
+      httpResult.setMessage("缺少发布信息");
+      return httpResult;
+    }
+
+    if (publish.getProjectId() == null) {
+      httpResult.warning();
+      httpResult.setMessage("请选择项目");
+      return httpResult;
+    }
+
+    if (Strings.isNullOrEmpty(publish.getBranch())) {
+      httpResult.warning();
+      httpResult.setMessage("请选择分支");
+      return httpResult;
+    }
+
+    if (publish.getPublishConfId() == null) {
+      httpResult.warning();
+      httpResult.setMessage("请选择配置");
+      return httpResult;
+    }
+
+    try {
+      int result = publishService.insert(publish);
+      if (result == 1) {
+        httpResult.success();
+      } else {
+        httpResult.warning();
+        httpResult.setMessage("发布失败");
+      }
+
+    } catch (Exception e) {
+      log.error("publish error, publish={}", publish, e);
+      httpResult.error();
+      httpResult.setMessage("发布服务失败");
     }
 
     return httpResult;

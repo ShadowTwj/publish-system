@@ -19,7 +19,8 @@ import java.util.Set;
  */
 @Slf4j
 public class GitHubUtils {
-  private static final String TOKEN = "559266714791f5dce13530466e3915af905d22a1";
+  //可以设置默认token，用来不绑定token也可以拉取代码
+  private static final String TOKEN = "";
   private static final String GIT_ADDRESS = "https://github.com/";
 
   public static Set<String> getBranches(String token, String git) throws IOException {
@@ -27,17 +28,17 @@ public class GitHubUtils {
       token = TOKEN;
     }
     GitHub gitHub = GitHub.connectUsingOAuth(token);
-    String name = git.substring(GIT_ADDRESS.length(),git.indexOf(".git"));
+    String name = git.substring(GIT_ADDRESS.length(), git.indexOf(".git"));
     GHRepository ghRepository = gitHub.getRepository(name);
     return ghRepository.getBranches().keySet();
   }
 
   public static List<String> getTags(String token, String git) throws IOException {
-    if (Strings.isNullOrEmpty(token)){
+    if (Strings.isNullOrEmpty(token)) {
       token = TOKEN;
     }
     GitHub gitHub = GitHub.connectUsingOAuth(token);
-    String name = git.substring(GIT_ADDRESS.length(),git.indexOf(".git"));
+    String name = git.substring(GIT_ADDRESS.length(), git.indexOf(".git"));
     GHRepository ghRepository = gitHub.getRepository(name);
     List<GHTag> ghTags = ghRepository.listTags().asList();
     List<String> tags = Lists.newArrayList();
@@ -52,7 +53,7 @@ public class GitHubUtils {
   public static void main(String[] args) throws IOException {
     GitHub gitHub = GitHub.connectUsingOAuth("559266714791f5dce13530466e3915af905d22a1");
     GHRepository ghRepository = gitHub.getRepository("ShadowTwj/publish-demo");
-//    ghRepository.createRef("git/tags/tianwj","559266714791f5dce13530466e3915af905d22a1");
+    //    ghRepository.createRef("git/tags/tianwj","559266714791f5dce13530466e3915af905d22a1");
     GHReleaseBuilder release = ghRepository.createRelease("tianwj-test");
     GHRelease ghRelease = release.create();
     String targetCommitish = ghRelease.getTargetCommitish();

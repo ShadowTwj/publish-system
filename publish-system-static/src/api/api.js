@@ -102,3 +102,16 @@ export const publishEditConfig = params => {
 export const publishDelConfig = params => {
     return axios.post(`${base}/publish/config/del-config`, params, {headers: header}).then(res => res.data);
 };
+
+export const publish = params => {
+    return axios.post(`${base}/publish/publish`, params, {headers: header}).then(res => res.data);
+};
+
+//token
+export const initToken = params => {
+    return axios.get(`${base}/token/init?account=` + params).then(res => res.data);
+};
+
+export const updateToken = params => {
+    return axios.post(`${base}/token/update`, params, {headers: header}).then(res => res.data);
+};
