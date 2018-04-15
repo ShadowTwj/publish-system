@@ -27,6 +27,7 @@ public class EnvironmentService {
   public int insertEnvironment(@NonNull Environment environment) {
     environment.setCreateTime(new Date());
     environment.setUpdateTime(new Date());
+    environment.setStatus(0);
     return environmentMapper.insertEnvironment(environment);
   }
 

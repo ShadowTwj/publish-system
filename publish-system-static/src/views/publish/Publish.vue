@@ -44,9 +44,9 @@
                 </el-table>
             </el-form-item>
 
-            <el-form-item label="即时配送">
-                <el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>
-            </el-form-item>
+            <!--<el-form-item label="即时配送">-->
+                <!--<el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>-->
+            <!--</el-form-item>-->
 
             <el-form-item label="备注">
                 <el-input type="textarea" v-model="form.data.remark"></el-input>
@@ -75,8 +75,9 @@
                     <el-input v-model="config.data.tomcatContextPath" auto-complete="off" placeholder="'/'可以带也可以不带" style="width:200px;"></el-input>
                 </el-form-item>
 
-                <el-form-item label="实体个数">
-                    <el-input-number v-model="config.data.replicas" :min="1" :max="10"></el-input-number>
+                <el-form-item label="实例数">
+                    <el-input-number v-model="config.data.replicas" :min="1" :max="10" :disabled="true"></el-input-number>
+                    目前只支持一个实例
                 </el-form-item>
 
                 <el-form-item label="端口">
@@ -273,7 +274,7 @@
                 this.config.data.environmentUniqueName = '';
                 this.config.data.tomcatContextPath = '';
                 this.config.data.replicas = '';
-                this.config.data.ports = '';
+                this.config.data.ports = '8080';
                 this.config.data.remark = '';
                 this.config.data.createUser = this.userName;
                 this.config.data.createTime = '';
@@ -399,7 +400,7 @@
                 });
             },
             publishHistory() {
-
+                this.$router.push({name: '发布历史', params: {}})
             }
         },
             mounted() {

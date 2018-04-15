@@ -31,10 +31,14 @@
             <el-table-column prop="userName" label="用户名" sortable>
             </el-table-column>
             <el-table-column prop="status" label="状态" sortable>
+                <template scope="scope">
+                    <el-tag v-if="scope.row.status === 1" type="success">正确</el-tag>
+                    <el-tag v-else-if="scope.row.status === -1" type="danger">错误</el-tag>
+                </template>
             </el-table-column>
             <el-table-column prop="remark" label="说明" min-width="100" sortable>
             </el-table-column>
-            <el-table-column prop="updateUser" label="修改人" width="180" sortable>
+            <el-table-column prop="updateUser" label="修改人" width="100" sortable>
             </el-table-column>
             <el-table-column prop="updateTime" label="修改时间" width="180" sortable>
             </el-table-column>
@@ -74,7 +78,12 @@
                     <el-input type=password v-model="form.data.password" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="状态">
-                    <el-input v-model="form.data.status" auto-complete="off" :disabled="true"></el-input>
+                    <!--<el-input v-model="form.data.status" auto-complete="off" :disabled="true"></el-input>-->
+                    <template scope="scope">
+                        <el-tag v-if="form.data.status === 1" type="success">正确</el-tag>
+                        <el-tag v-else-if="form.data.status === -1" type="danger">错误</el-tag>
+                        <el-tag v-else type="warning">未知</el-tag>
+                    </template>
                 </el-form-item>
                 <el-form-item label="说明">
                     <el-input type="textarea" v-model="form.data.remark"></el-input>

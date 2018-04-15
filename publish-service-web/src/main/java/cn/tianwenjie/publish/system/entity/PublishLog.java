@@ -15,20 +15,19 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Publish {
+public class PublishLog {
   private Integer id;
-  private Integer publishConfId;
   private Integer projectId;
-  private String projectName;
-  private Integer environmentId;
-  private String environmentName;
-  private String branch;
+  private Integer publishConfId;
+  private Integer publishId;
+  private String stepName;
+  /**
+   * 步骤顺序
+   */
+  private Integer stepOrder;
+  private String stepLog;
   private String remark;
   private Integer status;
-  /**
-   * 耗时
-   */
-  private Long costTime;
   private String createUser;
   private Date createTime;
   private String updateUser;

@@ -17,19 +17,20 @@ import java.util.Date;
 @AllArgsConstructor
 public class PublishHistory {
   private Integer id;
-  private Integer projectId;
   private Integer publishConfId;
-  private Integer publishId;
-  private String stepName;
-  /**
-   * 步骤顺序
-   */
-  private Integer stepOrder;
-  private String stepLog;
+  private Integer projectId;
+  private String projectName;
+  private Integer environmentId;
+  private String environmentName;
+  private String branch;
   private String remark;
   private Integer status;
+  /**
+   * 耗时
+   */
+  private Long costTime;
   private String createUser;
   private Date createTime;
   private String updateUser;
-  private Date updateTim;
+  private Date updateTime;
 }

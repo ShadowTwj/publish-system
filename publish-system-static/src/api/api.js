@@ -115,3 +115,8 @@ export const initToken = params => {
 export const updateToken = params => {
     return axios.post(`${base}/token/update`, params, {headers: header}).then(res => res.data);
 };
+
+//publishHistory
+export const getPublishHistory = params =>{
+    return axios.get(`${base}/publish-history/list`).then(res => res.data)
+};

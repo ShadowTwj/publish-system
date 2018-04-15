@@ -3,7 +3,7 @@ package cn.tianwenjie.publish.system.web;
 import cn.tianwenjie.publish.system.bean.HttpResult;
 import cn.tianwenjie.publish.system.entity.Environment;
 import cn.tianwenjie.publish.system.entity.Project;
-import cn.tianwenjie.publish.system.entity.Publish;
+import cn.tianwenjie.publish.system.entity.PublishHistory;
 import cn.tianwenjie.publish.system.entity.PublishConf;
 import cn.tianwenjie.publish.system.service.EnvironmentService;
 import cn.tianwenjie.publish.system.service.ProjectService;
@@ -265,35 +265,35 @@ public class PublishController {
   }
 
   @RequestMapping(value = "publish", method = RequestMethod.POST)
-  public HttpResult publish(@RequestBody Publish publish) {
+  public HttpResult publish(@RequestBody PublishHistory publishHistory) {
     HttpResult httpResult = new HttpResult();
 
-    if (publish == null) {
+    if (publishHistory == null) {
       httpResult.error();
       httpResult.setMessage("缺少发布信息");
       return httpResult;
     }
 
-    if (publish.getProjectId() == null) {
+    if (publishHistory.getProjectId() == null) {
       httpResult.warning();
       httpResult.setMessage("请选择项目");
       return httpResult;
     }
 
-    if (Strings.isNullOrEmpty(publish.getBranch())) {
+    if (Strings.isNullOrEmpty(publishHistory.getBranch())) {
       httpResult.warning();
       httpResult.setMessage("请选择分支");
       return httpResult;
     }
 
-    if (publish.getPublishConfId() == null) {
+    if (publishHistory.getPublishConfId() == null) {
       httpResult.warning();
       httpResult.setMessage("请选择配置");
       return httpResult;
     }
 
     try {
-      int result = publishService.insert(publish);
+      int result = publishService.publish(publishHistory);
       if (result == 1) {
         httpResult.success();
       } else {
@@ -302,7 +302,7 @@ public class PublishController {
       }
 
     } catch (Exception e) {
-      log.error("publish error, publish={}", publish, e);
+      log.error("publish error, publishHistory={}", publishHistory, e);
       httpResult.error();
       httpResult.setMessage("发布服务失败");
     }

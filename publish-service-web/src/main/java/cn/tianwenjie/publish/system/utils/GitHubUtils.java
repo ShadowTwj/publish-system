@@ -19,7 +19,9 @@ import java.util.Set;
  */
 @Slf4j
 public class GitHubUtils {
-  //可以设置默认token，用来不绑定token也可以拉取代码
+  /**
+   * 可以设置默认token，用来不绑定token也可以拉取代码
+   */
   private static final String TOKEN = "";
   private static final String GIT_ADDRESS = "https://github.com/";
 

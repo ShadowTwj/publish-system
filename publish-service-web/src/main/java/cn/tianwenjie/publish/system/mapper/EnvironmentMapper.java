@@ -38,7 +38,7 @@ public interface EnvironmentMapper {
    * @param environment
    * @return
    */
-  @Insert("INSERT INTO environment (unique_name, ip, user_name, `password`, `status`, remark, create_time, create_user, update_time, update_user) \n" +
+  @Insert("INSERT INTO environment (unique_name, ip, user_name, password, status, remark, create_time, create_user, update_time, update_user) \n" +
             "VALUES(#{environment.uniqueName}, #{environment.ip}, #{environment.userName}, #{environment.password}, ${environment.status}, " +
             "#{environment.remark}, #{environment.createTime}, #{environment.createUser}, #{environment.updateTime}, #{environment.updateUser})")
   int insertEnvironment(@Param("environment") Environment environment);

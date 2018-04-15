@@ -10,7 +10,9 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 /**
- * Created by tianwj on 2017/12/1.
+ *
+ * @author tianwj
+ * @date 2017/12/1
  */
 public interface UserMapper {
   /**

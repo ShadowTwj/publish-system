@@ -1,72 +1,120 @@
 <template>
-	<section>
-		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
-				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" v-on:click="getUser">查询</el-button>
-				</el-form-item>
-			</el-form>
-		</el-col>
+    <section>
+        <!--工具条-->
+        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+            <el-form :inline="true" :model="filters">
+                <el-form-item>
+                    <el-input v-model="filters.keyword" placeholder="关键字"></el-input>
+                </el-form-item>
+            </el-form>
+        </el-col>
 
-		<!--列表-->
-		<template>
-			<el-table :data="users" highlight-current-row v-loading="loading" style="width: 100%;">
-				<el-table-column type="index" width="60">
-				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="120" sortable>
-				</el-table-column>
-				<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
-				</el-table-column>
-				<el-table-column prop="age" label="年龄" width="100" sortable>
-				</el-table-column>
-				<el-table-column prop="birth" label="生日" width="120" sortable>
-				</el-table-column>
-				<el-table-column prop="addr" label="地址" min-width="180" sortable>
-				</el-table-column>
-			</el-table>
-		</template>
+        <!--列表-->
+        <template>
+            <el-table :data="publishHistoryList" highlight-current-row v-loading="table.loading" style="width: 100%;">
+                <el-table-column type="index" width="60">
+                </el-table-column>
+                <el-table-column prop="projectName" label="项目名称" sortable>
+                </el-table-column>
+                <el-table-column prop="environmentName" label="环境名称" sortable>
+                </el-table-column>
+                <el-table-column prop="branch" label="代码版本" sortable>
+                </el-table-column>
+                <el-table-column prop="createUser" label="发布人" sortable>
+                </el-table-column>
+                <el-table-column label="发布结果" sortable>
+                    <template scope="scope">
+                        <el-tag v-if="scope.row.status === 0" type="primary">进行中</el-tag>
+                        <el-tag v-else-if="scope.row.status === 1" type="success">成功</el-tag>
+                        <el-tag v-else-if="scope.row.status === -1" type="danger">失败</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="remark" label="发布备注" sortable>
+                </el-table-column>
+                <el-table-column prop="createTime" label="发布时间" min-width="100" sortable>
+                </el-table-column>
+            </el-table>
 
-	</section>
+            <!--工具条-->
+            <el-col :span="24" class="toolbar" style="padding-bottom:10px;">
+                <!--分页-->
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        @size-change="handleSizeChange"
+                        :current-page="table.page" :page-sizes="[10, 25, 50]" :page-size="table.size"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="publishHistoryList.length" style="float:right">
+                </el-pagination>
+            </el-col>
+        </template>
+
+    </section>
 </template>
 <script>
-    import { getUserList } from '../../api/api';
-    //import NProgress from 'nprogress'
+    import {getPublishHistory} from '../../api/api';
+
     export default {
         data() {
             return {
                 filters: {
-                    name: ''
+                    keyword: ''
                 },
-                loading: false,
-                users: [
-                ]
+                table: {
+                    loading: false,
+                    page: 1,
+                    size: 10,
+                    data: []
+                },
+                publishHistory: {
+                    id: '',
+                    publishConfId: '',
+                    projectId: '',
+                    projectName: '',
+                    environmentId: '',
+                    environmentName: '',
+                    branch: '',
+                    remark: '',
+                    status: '',
+                    costTime: '',
+                    createUser: '',
+                    createTime: '',
+                    updateUser: '',
+                    updateTime: ''
+                }
+            }
+        },
+        computed:{
+            publishHistoryList:function () {
+                var self = this, data = self.table.data, page = self.table.page, size = self.table.size, keyword = self.filters.keyword;
+                var v = data.filter(function (p) {
+                    return (p.projectName && p.projectName.indexOf(keyword) !== -1)
+                        || (p.environmentName && p.environmentName.indexOf(keyword) !== -1)
+                        || (p.branch && p.branch.indexOf(keyword) !== -1)
+                        || (p.createUser && p.createUser.indexOf(keyword) !== -1)
+                        || (p.remark && p.remark.indexOf(keyword) !== -1)
+                        || (p.createTime && p.createTime.indexOf(keyword) !== -1)
+                });
+                v = v.slice((page - 1) * size, page * size);
+                return v;
             }
         },
         methods: {
-            //性别显示转换
-            formatSex: function (row, column) {
-                return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
+            getPublishHistory() {
+                this.table.loading = true;
+                getPublishHistory().then((data) => {
+                    this.table.data = data;
+                    this.table.loading = false;
+                })
             },
-            //获取用户列表
-            getUser: function () {
-                let para = {
-                    name: this.filters.name
-                };
-                this.loading = true;
-                //NProgress.start();
-                getUserList(para).then((res) => {
-                    this.users = res.data.users;
-                    this.loading = false;
-                    //NProgress.done();
-                });
-            }
+            handleCurrentChange(val) {
+                this.table.page = val;
+            },
+            handleSizeChange(val) {
+                this.table.size = val;
+            },
         },
         mounted() {
-            this.getUser();
+            this.getPublishHistory();
         }
     };
 
