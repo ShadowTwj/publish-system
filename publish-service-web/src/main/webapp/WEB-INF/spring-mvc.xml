@@ -42,14 +42,16 @@
   <!--对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，如果不是静态资源的请求，才由DispatcherServlet继续处理-->
   <!--<mvc:default-servlet-handler/>-->
 
-  <!--&lt;!&ndash; JSP 视图解析器 &ndash;&gt;-->
-  <!--<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-    <!--<property name="prefix" value="/WEB-INF/jsp/"/>-->
-    <!--<property name="suffix" value=".jsp"/>-->
-  <!--</bean>-->
+  <!-- JSP 视图解析器 -->
+  <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/jsp/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:order="1" p:contentType="text/html; charset=UTF-8" p:prefix="/" p:suffix=".html"/>
+
+  <mvc:resources mapping="/**" location="/WEB-INF/dist/"/>
 
   <!--跨域-->
   <mvc:cors>

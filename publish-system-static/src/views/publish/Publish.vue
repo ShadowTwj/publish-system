@@ -385,12 +385,13 @@
                         this.form.data.updateUser = this.userName;
                         publish(this.form.data).then((response) => {
                             if (response.type === "success") {
-                                util.success(response.message);
+                                // util.success(response.message);
                             } else if (response.type === "error") {
                                 util.error(response.message);
                             } else {
                                 util.warning(response.message);
                             }
+                            this.$router.push({name: '发布历史', params: {}});
                         }, () => {
                             util.error();
                         });
@@ -400,7 +401,7 @@
                 });
             },
             publishHistory() {
-                this.$router.push({name: '发布历史', params: {}})
+                this.$router.push({name: '发布历史', params: {}});
             }
         },
             mounted() {

@@ -64,23 +64,23 @@
                     page: 1,
                     size: 10,
                     data: []
-                },
-                publishHistory: {
-                    id: '',
-                    publishConfId: '',
-                    projectId: '',
-                    projectName: '',
-                    environmentId: '',
-                    environmentName: '',
-                    branch: '',
-                    remark: '',
-                    status: '',
-                    costTime: '',
-                    createUser: '',
-                    createTime: '',
-                    updateUser: '',
-                    updateTime: ''
                 }
+                // publishHistory: {
+                //     id: '',
+                //     publishConfId: '',
+                //     projectId: '',
+                //     projectName: '',
+                //     environmentId: '',
+                //     environmentName: '',
+                //     branch: '',
+                //     remark: '',
+                //     status: '',
+                //     costTime: '',
+                //     createUser: '',
+                //     createTime: '',
+                //     updateUser: '',
+                //     updateTime: ''
+                // }
             }
         },
         computed:{

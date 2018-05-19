@@ -19,7 +19,7 @@ public class PublishLog {
   private Integer id;
   private Integer projectId;
   private Integer publishConfId;
-  private Integer publishId;
+  private Integer publishHistoryId;
   private String stepName;
   /**
    * 步骤顺序

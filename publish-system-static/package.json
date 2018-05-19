@@ -1,7 +1,7 @@
 {
-  "name": "vueadmin",
+  "name": "publish-service",
   "version": "1.0.5",
-  "description": "vue admin project",
+  "description": "vue publish-service project",
   "author": "taylor <709161610@qq.com>",
   "license": "MIT",
   "scripts": {
