@@ -17,13 +17,25 @@ public class RuntimeTest {
   @Test
   public void RuntimeTest() throws IOException {
     Runtime runtime = Runtime.getRuntime();
-    Process process = runtime.exec("ls /Users/tianwj");
+    Process process = runtime.exec("pwd");
     InputStream inputStream = process.getInputStream();
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
-    String buf = null;
+    String buf;
     while ((buf = bufferedReader.readLine()) != null) {
       System.out.println(buf);
     }
+  }
+
+  @Test
+  public void rootPathTest() {
+    String rootPath = Thread.currentThread().getContextClassLoader().getResource("").toString();
+//                            .replace("/classes/", "").replace("file:", "");
+    System.out.println(rootPath);
+
+    System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getDefaultPort());
+    System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getFile());
+    System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getPath());
+
   }
 
 }

@@ -8,7 +8,7 @@ import cn.tianwenjie.publish.system.entity.PublishConf;
 import cn.tianwenjie.publish.system.service.EnvironmentService;
 import cn.tianwenjie.publish.system.service.ProjectService;
 import cn.tianwenjie.publish.system.service.PublishConfService;
-import cn.tianwenjie.publish.system.service.PublishService;
+import cn.tianwenjie.publish.system.service.PublishHistoryService;
 import cn.tianwenjie.publish.system.service.UserService;
 import cn.tianwenjie.publish.system.utils.GitHubUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -45,7 +45,7 @@ public class PublishController {
   @Resource
   private EnvironmentService environmentService;
   @Resource
-  private PublishService publishService;
+  private PublishHistoryService publishHistoryService;
 
   @RequestMapping(value = "init", method = RequestMethod.GET)
   public HttpResult initPublish() {
@@ -293,7 +293,7 @@ public class PublishController {
     }
 
     try {
-      int result = publishService.publish(publishHistory);
+      int result = publishHistoryService.publishProject(publishHistory);
       if (result == 1) {
         httpResult.success();
       } else {

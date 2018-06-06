@@ -4,6 +4,7 @@ import cn.tianwenjie.publish.system.entity.PublishHistory;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface PublishHistoryMapper {
             "VALUES " +
             "(${publishHistory.publishConfId}, ${publishHistory.projectId}, #{publishHistory.projectName}, ${publishHistory.environmentId}, #{publishHistory.environmentName}, #{publishHistory.branch}, " +
             "#{publishHistory.remark}, ${publishHistory.status}, ${publishHistory.costTime}, #{publishHistory.createUser}, #{publishHistory.createTime}, #{publishHistory.updateUser}, #{publishHistory.updateTime})")
+  @SelectKey(statement = "SELECT max(id) id FROM publish_history", keyProperty = "id", before = false, resultType = Integer.class)
   Integer insert(@Param("publishHistory") PublishHistory publishHistory);
 
   /**
@@ -33,4 +35,13 @@ public interface PublishHistoryMapper {
    */
   @Select("SELECT * FROM publish_history ORDER BY create_time DESC LIMIT 1000")
   List<PublishHistory> getPublishHistoryList();
+
+  /**
+   * 根据ID获取发布历史
+   *
+   * @param id
+   * @return
+   */
+  @Select("SELECT * FROM publish_history WHERE id = #{id}")
+  PublishHistory findById(@Param("id") int id);
 }

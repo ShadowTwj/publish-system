@@ -16,6 +16,15 @@ import java.util.List;
 public interface EnvironmentMapper {
 
   /**
+   * 根据ID获取
+   *
+   * @param id
+   * @return
+   */
+  @Select("SELECT * FROM environment WHERE id = ${id}")
+  Environment findById(@Param("id") int id);
+
+  /**
    * 获取所有的environment
    *
    * @return
