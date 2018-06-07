@@ -1,4 +1,4 @@
-package cn.tianwenjie.publish.system.mapper;
+package cn.tianwenjie.publish.system.utils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

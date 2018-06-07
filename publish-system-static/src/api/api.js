@@ -117,6 +117,11 @@ export const updateToken = params => {
 };
 
 //publishHistory
-export const getPublishHistory = params =>{
-    return axios.get(`${base}/publish-history/list`).then(res => res.data)
+export const getPublishHistory = params => {
+    return axios.get(`${base}/publish-history/list`).then(res => res.data);
+};
+
+//publishLog
+export const getPublishLog = params => {
+    return axios.get(`${base}/publish-log?id=` + params).then(res => res.data);
 };

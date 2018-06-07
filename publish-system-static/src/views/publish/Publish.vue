@@ -391,7 +391,7 @@
                             } else {
                                 util.warning(response.message);
                             }
-                            this.$router.push({name: '发布历史', params: {}});
+                            this.$router.push({name: '发布详情', params: {}});
                         }, () => {
                             util.error();
                         });

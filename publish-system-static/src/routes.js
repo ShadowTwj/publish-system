@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Main from './views/Main.vue'
 import User from './views/user/User.vue'
 import PublishHistory from './views/publish/PublishHistory.vue'
+import PublishLog from './views/publish/PublishLog.vue'
 import Publish from './views/publish/Publish.vue'
 import Project from './views/manage/Project.vue'
 import Environment from './views/manage/Environment.vue'
@@ -33,6 +34,7 @@ let routes = [
             // {path: '/main', component: Main, name: '主页', hidden: true},
             {path: '/publish', component: Publish, name: '发布服务'},
             {path: '/history', component: PublishHistory, name: '发布历史'},
+            {path: '/log/:publishHistoryId', component: PublishLog, name: '发布详情', hidden: true},
         ]
     },
     {
@@ -56,15 +58,15 @@ let routes = [
             {path: '/user', component: User, name: '用户管理'}
         ]
     },
-    {
-        path: '/',
-        component: Home,
-        name: '发布统计',
-        iconCls: 'fa fa-bar-chart',
-        children: [
-            {path: '/echarts', component: echarts, name: 'echarts'}
-        ]
-    },
+    // {
+    //     path: '/',
+    //     component: Home,
+    //     name: '发布统计',
+    //     iconCls: 'fa fa-bar-chart',
+    //     children: [
+    //         {path: '/echarts', component: echarts, name: 'echarts'}
+    //     ]
+    // },
     {
         path: '*',
         hidden: true,

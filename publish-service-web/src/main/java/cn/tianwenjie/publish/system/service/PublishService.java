@@ -8,6 +8,7 @@ import cn.tianwenjie.publish.system.entity.PublishLog;
 import cn.tianwenjie.publish.system.mapper.EnvironmentMapper;
 import cn.tianwenjie.publish.system.mapper.ProjectMapper;
 import cn.tianwenjie.publish.system.mapper.PublishConfMapper;
+import cn.tianwenjie.publish.system.mapper.PublishHistoryMapper;
 import cn.tianwenjie.publish.system.mapper.PublishLogMapper;
 import cn.tianwenjie.publish.system.utils.GitHubUtils;
 import com.google.common.base.Joiner;
@@ -34,7 +35,7 @@ import java.util.Objects;
 @Slf4j
 public class PublishService {
   @Resource
-  private PublishHistoryService publishHistoryService;
+  private PublishHistoryMapper publishHistoryMapper;
   @Resource
   private UserService userService;
   @Resource
@@ -51,14 +52,52 @@ public class PublishService {
 
   @Async
   public void publish(@NonNull PublishHistory publishHistory) {
+    //开始log
+    PublishLog startPublishLog = PublishLog.builder()
+                                           .projectId(publishHistory.getProjectId())
+                                           .publishConfId(publishHistory.getPublishConfId())
+                                           .publishHistoryId(publishHistory.getId())
+                                           .stepName("开始")
+                                           .stepOrder(1)
+                                           .status(0)
+                                           .remark(publishHistory.getRemark())
+                                           .createUser(publishHistory.getCreateUser())
+                                           .createTime(new Date())
+                                           .updateUser(publishHistory.getUpdateUser())
+                                           .updateTime(new Date())
+                                           .build();
+    publishLogMapper.insert(startPublishLog);
+
+    //todo:修改耗时
     if (1 == pullProject(publishHistory)) {
+      publishHistoryMapper.updateById(publishHistory.getId(), -1);
       return;
     }
     if (1 == compile(publishHistory)) {
+      publishHistoryMapper.updateById(publishHistory.getId(), -1);
       return;
     }
-    deploy(publishHistory);
+    if (1 == deploy(publishHistory)) {
+      publishHistoryMapper.updateById(publishHistory.getId(), -1);
+      return;
+    }
+    //完成log
+    PublishLog finishPublishLog = PublishLog.builder()
+                                            .projectId(publishHistory.getProjectId())
+                                            .publishConfId(publishHistory.getPublishConfId())
+                                            .publishHistoryId(publishHistory.getId())
+                                            .stepName("完成")
+                                            .stepOrder(5)
+                                            .status(0)
+                                            .remark(publishHistory.getRemark())
+                                            .createUser(publishHistory.getCreateUser())
+                                            .createTime(new Date())
+                                            .updateUser(publishHistory.getUpdateUser())
+                                            .updateTime(new Date())
+                                            .build();
+    publishLogMapper.insert(finishPublishLog);
 
+    publishHistoryMapper.updateById(publishHistory.getId(), 0);
   }
 
   /**
@@ -70,7 +109,7 @@ public class PublishService {
                                       .publishConfId(publishHistory.getPublishConfId())
                                       .publishHistoryId(publishHistory.getId())
                                       .stepName("获取代码")
-                                      .stepOrder(1)
+                                      .stepOrder(2)
                                       .remark(publishHistory.getRemark())
                                       .createUser(publishHistory.getCreateUser())
                                       .createTime(new Date())
@@ -123,7 +162,8 @@ public class PublishService {
    * 获取rootPath
    */
   private String getRootPath() {
-    return Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath().replace("/test-classes/", "");
+    return Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath().replace("/classes/", "");
+    //    return Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath().replace("/test-classes/", "");
   }
 
   /**
@@ -135,7 +175,7 @@ public class PublishService {
                                       .publishConfId(publishHistory.getPublishConfId())
                                       .publishHistoryId(publishHistory.getId())
                                       .stepName("编译代码")
-                                      .stepOrder(2)
+                                      .stepOrder(3)
                                       .remark(publishHistory.getRemark())
                                       .createUser(publishHistory.getCreateUser())
                                       .createTime(new Date())
@@ -185,7 +225,7 @@ public class PublishService {
                                       .publishConfId(publishHistory.getPublishConfId())
                                       .publishHistoryId(publishHistory.getId())
                                       .stepName("部署项目")
-                                      .stepOrder(3)
+                                      .stepOrder(4)
                                       .remark(publishHistory.getRemark())
                                       .createUser(publishHistory.getCreateUser())
                                       .createTime(new Date())

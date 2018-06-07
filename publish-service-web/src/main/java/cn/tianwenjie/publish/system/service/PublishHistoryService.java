@@ -40,13 +40,13 @@ public class PublishHistoryService {
     publishHistory.setEnvironmentName(publishConf.getEnvironmentUniqueName());
     Project project = projectMapper.findById(publishHistory.getProjectId());
     publishHistory.setProjectName(project.getUniqueName());
-    publishHistory.setStatus(0);
+    publishHistory.setStatus(1);
     publishHistory.setCreateTime(new Date());
     publishHistory.setUpdateTime(new Date());
     publishHistory.setCostTime(0L);
-    publishHistory.setId(publishHistoryMapper.insert(publishHistory));
+    int result = publishHistoryMapper.insert(publishHistory);
     //发布服务
     publishService.publish(publishHistory);
-    return 1;
+    return result;
   }
 }

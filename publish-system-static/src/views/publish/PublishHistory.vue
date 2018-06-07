@@ -14,7 +14,10 @@
             <el-table :data="publishHistoryList" highlight-current-row v-loading="table.loading" style="width: 100%;">
                 <el-table-column type="index" width="60">
                 </el-table-column>
-                <el-table-column prop="projectName" label="项目名称" sortable>
+                <el-table-column prop="projectName" @click="publishLog" label="项目名称" sortable>
+                    <template scope="scope">
+                        <router-link :to="'/log/'+scope.row.id">{{ scope.row.projectName }}</router-link>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="environmentName" label="环境名称" sortable>
                 </el-table-column>
@@ -24,8 +27,8 @@
                 </el-table-column>
                 <el-table-column label="发布结果" sortable>
                     <template scope="scope">
-                        <el-tag v-if="scope.row.status === 0" type="primary">进行中</el-tag>
-                        <el-tag v-else-if="scope.row.status === 1" type="success">成功</el-tag>
+                        <el-tag v-if="scope.row.status === 1" type="primary">进行中</el-tag>
+                        <el-tag v-else-if="scope.row.status === 0" type="success">成功</el-tag>
                         <el-tag v-else-if="scope.row.status === -1" type="danger">失败</el-tag>
                     </template>
                 </el-table-column>
@@ -112,6 +115,10 @@
             handleSizeChange(val) {
                 this.table.size = val;
             },
+
+            publishLog() {
+                this.$router.push({name: '发布详情', params: {}});
+            }
         },
         mounted() {
             this.getPublishHistory();

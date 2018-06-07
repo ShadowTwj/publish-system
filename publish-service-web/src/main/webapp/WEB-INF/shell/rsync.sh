@@ -9,7 +9,7 @@ set password [lindex $argv 4]
 spawn rsync -avz --progress $warPath $userName@$ip:$deployPath
 expect {
 "*yes/no)? " {send "yes\n"; exp_continue}
-"*password:" {send '$password\n'}
+"*password:" {send "$password\n"}
 }
 interact
 

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface PublishHistoryMapper {
             "VALUES " +
             "(${publishHistory.publishConfId}, ${publishHistory.projectId}, #{publishHistory.projectName}, ${publishHistory.environmentId}, #{publishHistory.environmentName}, #{publishHistory.branch}, " +
             "#{publishHistory.remark}, ${publishHistory.status}, ${publishHistory.costTime}, #{publishHistory.createUser}, #{publishHistory.createTime}, #{publishHistory.updateUser}, #{publishHistory.updateTime})")
-  @SelectKey(statement = "SELECT max(id) id FROM publish_history", keyProperty = "id", before = false, resultType = Integer.class)
+  @SelectKey(statement = "SELECT max(id) id FROM publish_history", keyColumn = "id", keyProperty = "publishHistory.id", before = false, resultType = Integer.class)
   Integer insert(@Param("publishHistory") PublishHistory publishHistory);
 
   /**
@@ -44,4 +45,14 @@ public interface PublishHistoryMapper {
    */
   @Select("SELECT * FROM publish_history WHERE id = #{id}")
   PublishHistory findById(@Param("id") int id);
+
+  /**
+   * 根据id更新状态
+   *
+   * @param id
+   * @param status
+   * @return
+   */
+  @Update("UPDATE publish_history SET status = ${status} WHERE id = ${id}")
+  Integer updateById(@Param("id") int id, @Param("status") int status);
 }
