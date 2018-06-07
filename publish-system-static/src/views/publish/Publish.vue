@@ -45,7 +45,7 @@
             </el-form-item>
 
             <!--<el-form-item label="即时配送">-->
-                <!--<el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>-->
+            <!--<el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>-->
             <!--</el-form-item>-->
 
             <el-form-item label="备注">
@@ -391,7 +391,10 @@
                             } else {
                                 util.warning(response.message);
                             }
-                            this.$router.push({name: '发布详情', params: {}});
+                            this.$router.push({
+                                name: '发布详情', params: {publishHistoryId: response.data}
+                            })
+                            ;
                         }, () => {
                             util.error();
                         });
@@ -404,7 +407,7 @@
                 this.$router.push({name: '发布历史', params: {}});
             }
         },
-            mounted() {
+        mounted() {
             this.initData();
             this.getUserName();
         }

@@ -44,9 +44,9 @@ public class PublishHistoryService {
     publishHistory.setCreateTime(new Date());
     publishHistory.setUpdateTime(new Date());
     publishHistory.setCostTime(0L);
-    int result = publishHistoryMapper.insert(publishHistory);
+    publishHistoryMapper.insert(publishHistory);
     //发布服务
     publishService.publish(publishHistory);
-    return result;
+    return publishHistory.getId();
   }
 }

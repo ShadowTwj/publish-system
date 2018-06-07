@@ -293,9 +293,10 @@ public class PublishController {
     }
 
     try {
-      int result = publishHistoryService.publishProject(publishHistory);
-      if (result == 1) {
+      Integer result = publishHistoryService.publishProject(publishHistory);
+      if (result != null) {
         httpResult.success();
+        httpResult.setData(result);
       } else {
         httpResult.warning();
         httpResult.setMessage("发布失败");
