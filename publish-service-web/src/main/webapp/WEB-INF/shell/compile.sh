@@ -39,7 +39,7 @@ if [ "$isModule" == "false" ]; then
 else
   echo 'mvn -am -U clean package -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -pl '$moduleName
   echo
-  mvn -am -U clean package -Dmaven.test.skip=true -Dmaven.javadoc.skip=true pl $moduleName
+  mvn -am -U clean package -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -pl $moduleName
 fi
 
 exit 0
