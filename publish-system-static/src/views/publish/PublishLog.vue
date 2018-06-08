@@ -30,7 +30,7 @@
                 stopId: '',
 
                 //展开行
-                activeName: '',
+                activeName: '5',
                 logs: [],
             }
         },
