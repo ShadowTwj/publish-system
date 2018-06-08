@@ -30,7 +30,7 @@
                 stopId: '',
 
                 //展开行
-                activeName: '5',
+                activeName: '',
                 logs: [],
             }
         },
@@ -58,6 +58,7 @@
                     } else {
                         this.active = lastLog.stepOrder;
                         if (lastLog.stepOrder === 5) {
+                            this.activeName = 5;
                             clearInterval(this.stopId);
                         }
                     }

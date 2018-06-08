@@ -84,14 +84,14 @@ public class PublishService {
     //完成log
     Environment environment = environmentMapper.findById(publishHistory.getEnvironmentId());
     PublishConf publishConf = publishConfMapper.findById(publishHistory.getPublishConfId());
-    String url = environment.getIp() + ":" + publishConf.getPorts() + "/" + publishConf.getTomcatContextPath().replaceAll("/", "");
+    String url = "http://"+ environment.getIp() + ":" + publishConf.getPorts() + "/" + publishConf.getTomcatContextPath().replaceAll("/", "");
     PublishLog finishPublishLog = PublishLog.builder()
                                             .projectId(publishHistory.getProjectId())
                                             .publishConfId(publishHistory.getPublishConfId())
                                             .publishHistoryId(publishHistory.getId())
                                             .stepName("完成")
                                             .stepOrder(5)
-                                            .stepLog("<a href=\"" + url + "\">" + "一键到" + url + "</a>")
+                                            .stepLog("<a href=\"" + url + "\" target=\"_blank\">" + "一键到" + url + "</a>")
                                             .status(0)
                                             .remark(publishHistory.getRemark())
                                             .createUser(publishHistory.getCreateUser())

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let base = '/publish-service';
-// let base = 'http://localhost:8080/publish-service';
+// let base = 'http://localhost:8082/publish-service';
 
 let header = {
     'content-type': 'application/json;charset=UTF-8'
