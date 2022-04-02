@@ -53,9 +53,9 @@ public class GitHubUtils {
   }
 
   public static void main(String[] args) throws IOException {
-    GitHub gitHub = GitHub.connectUsingOAuth("559266714791f5dce13530466e3915af905d22a1");
+    GitHub gitHub = GitHub.connectUsingOAuth("");
     GHRepository ghRepository = gitHub.getRepository("ShadowTwj/publish-demo");
-    //    ghRepository.createRef("git/tags/tianwj","559266714791f5dce13530466e3915af905d22a1");
+    //    ghRepository.createRef("git/tags/tianwj","");
     GHReleaseBuilder release = ghRepository.createRelease("tianwj-test");
     GHRelease ghRelease = release.create();
     String targetCommitish = ghRelease.getTargetCommitish();
